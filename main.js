@@ -3,7 +3,7 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 const width = window.innerWidth-60;
-const height = window.innerHeight-90;
+const height = window.innerHeight-200;
 
 // レンダラーを作成
 const renderer = new THREE.WebGLRenderer({
