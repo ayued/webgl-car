@@ -26,12 +26,29 @@ loader.load('models/car.glb', function (gltf) {
     const model = gltf.scene;
     scene.add(model);
 
+    model.traverse((child) => {
+      if (child.isMesh) {
+          // windowという名前のメッシュに対して質感を適用s
+          if (child.name === 'window') {
+              child.material = new THREE.MeshStandardMaterial({
+                  color: 0x000000,  // ガラスの色（薄いグレー）
+                  roughness: 0.1,   // 少し反射する質感
+                  metalness: 0.1,   // 金属的ではなく
+                  transparent: true, // 透明
+                  opacity: 0.7,     // 透明度
+                  refractionRatio: 0.98, // 屈折率（ガラスのような質感を表現）
+                  reflectivity: 0.7 // 反射感
+              });
+            }
+        }
+    });
+
     // マウスの動きに応じてモデルを回転
     document.addEventListener('mousemove', (event) => {
         const x = (event.clientX / window.innerWidth) * 2 - 1;
         const y = (event.clientY / window.innerHeight) * 2 - 1;
-        model.rotation.y = x * Math.PI * 0.1;
-        model.rotation.x = y * Math.PI * 0.1;
+        model.rotation.y = x * Math.PI * 0.2;
+        model.rotation.x = y * Math.PI * 0.2;
     });
 });
 
