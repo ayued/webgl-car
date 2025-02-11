@@ -76,7 +76,7 @@ function animateCamera() {
   gsap.to(camera.position, {
       x: 0,   // 最終位置
       y: 0,
-      z: 40,
+      z: 30,
       duration: 3,   // 時間
       ease: "power2.out",
       onUpdate: () => {
