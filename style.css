@@ -1,14 +1,33 @@
 body {
     margin: 0;
     overflow: hidden;
-    background-color: #000;
+    /* background-color: #fff; */
+    background-color: #5353d1;
+    /* background-color: #373d6d; */
+    display: flex;
+    flex-direction: column; /* 縦方向に配置 */
+    justify-content: center; /* コンテンツを縦中央に配置 */
+    align-items: center; /* 横方向に中央配置 */
+    height: 100vh; /* ビューポートの高さに合わせる */
 }
 
 canvas {
-    width: 100%;
-    height: 100%;
+    width: auto; /* 幅は自動調整 */
+    height: auto; /* 高さは自動調整 */
+    max-width: 100%; /* 最大幅100% */
+    max-height: 100%; /* 最大高さ100% */
 }
 
 h1 {
-    color: #ffffff;
+    font-size: 18px; /* フォントサイズを調整 */
+    color: #111;
+    text-align: center;
+    margin: 10px 0 10px 0;
+}
+
+p {
+    font-size: 14px; /* フォントサイズを調整 */
+    color: #111;
+    text-align: center;
+    margin: 6px 0 12px 0;
 }

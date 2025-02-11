@@ -2,8 +2,8 @@ import * as THREE from "three";
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
-const width = window.innerWidth;
-const height = window.innerHeight;
+const width = window.innerWidth-60;
+const height = window.innerHeight-90;
 
 // レンダラーを作成
 const renderer = new THREE.WebGLRenderer({
@@ -17,7 +17,7 @@ const scene = new THREE.Scene();
 
 // カメラを作成
 const camera = new THREE.PerspectiveCamera(45, width / height, 1, 10000);  //画角, アスペクト比, 描画開始/終了距離（オプション))
-camera.position.set(0, 0, 40); // 初期座標(x,y,z)
+camera.position.set(0, 0, 30); // 初期座標(x,y,z)
 camera.lookAt(0, 0, 0);
 
 // 3Dモデルを読み込み
