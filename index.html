@@ -5,8 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Title</title>
     <link rel="stylesheet" href="style.css">
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.7/gsap.min.js"></script> -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.7/gsap.min.js"></script>
 </head>
 <body>
   <h1>This is a car</h1>
@@ -18,6 +17,11 @@
         "three/addons/": "https://unpkg.com/three@0.152.2/examples/jsm/"
       }
     }
+  </script>
+  <script type="module">
+    import { gsap } from "https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.7/gsap.min.js";
+
+    gsap.to("h1", { duration: 1, opacity: 0.5, y: 50 });
   </script>
   <script src="main.js" type="module"></script>
   <p>Drag to move</p>
