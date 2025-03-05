@@ -2,8 +2,8 @@ import * as THREE from "three";
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
-const width = window.innerWidth-60;
-const height = window.innerHeight-200;
+const width = window.innerWidth - 60;
+const height = window.innerHeight - 200;
 
 // レンダラーを作成
 const renderer = new THREE.WebGLRenderer({
@@ -32,20 +32,20 @@ loader.load('models/car.glb', function (gltf) {
     scene.add(model);
 
     model.traverse((child) => {
-      if (child.isMesh) {
-          // windowメッシュの質感を指定
-          if (child.name === 'window') {
-              child.material = new THREE.MeshPhysicalMaterial({
-                  color: 0x000000,
-                  roughness: 0.1,   // 反射
-                  metalness: 0.1,   // 金属
-                  transparent: true, // 透過あり
-                  opacity: 0.7,     // 透明度
-              });
+        if (child.isMesh) {
+            // 'window' メッシュに対して別のマテリアル（MeshPhysicalMaterial）を設定
+            if (child.name === 'window') {
+                child.material = new THREE.MeshPhysicalMaterial({
+                    color: 0x000000,        // 黒色
+                    roughness: 0.1,         // 反射
+                    metalness: 0.1,         // 金属感
+                    transparent: true,      // 透過あり
+                    opacity: 0.7,           // 透明度
+                });
             }
         }
     });
-    
+
     // マウスの動きに応じてモデルを回転
     document.addEventListener('mousemove', (event) => {
         const x = (event.clientX / window.innerWidth) * 2 - 1;
@@ -58,41 +58,45 @@ loader.load('models/car.glb', function (gltf) {
     animateCamera();
 });
 
-// ライトを作成
-const light = new THREE.AmbientLight(0xffffff, 1);
-scene.add(light);
+// ライトを作成（AmbientLight + DirectionalLight）
+const ambientLight = new THREE.AmbientLight(0xFFFFFF, 0.4); // 周囲光
+scene.add(ambientLight);
+
+const directionalLight = new THREE.DirectionalLight(0xFFFFFF, 1); // 方向性のある光
+directionalLight.position.set(10, 10, 10); // ライトの位置を設定
+scene.add(directionalLight);
 
 // アニメーション
 tick();
 
 function tick() {
-  controls.update();
-  renderer.render(scene, camera);
-  requestAnimationFrame(tick);
+    controls.update();
+    renderer.render(scene, camera);
+    requestAnimationFrame(tick);
 }
 
 // カメラを動かすアニメーション（gsapでスムーズに移動）
 function animateCamera() {
-  gsap.to(camera.position, {
-      x: 0,   // 最終位置
-      y: 0,
-      z: 30,
-      duration: 3,   // 時間
-      ease: "power2.out",
-      onUpdate: () => {
-          camera.lookAt(0, 0, 0); // 常に車を見る
-      },
-      onComplete: () => {
-          controls.enabled = true; // カメラ操作を解放
-      }
-  });
+    gsap.to(camera.position, {
+        x: 0,   // 最終位置
+        y: 0,
+        z: 30,
+        duration: 3,   // 時間
+        ease: "power2.out",
+        onUpdate: () => {
+            camera.lookAt(0, 0, 0); // 常に車を見る
+        },
+        onComplete: () => {
+            controls.enabled = true; // カメラ操作を解放
+        }
+    });
 }
 
 // ブラウザのリサイズに対応
 window.addEventListener("resize", onWindowResize);
 
 function onWindowResize() {
-  renderer.setSize(innerWidth, innerHeight);
-  camera.aspect = innerWidth / innerHeight;
-  camera.updateProjectionMatrix();
+    renderer.setSize(innerWidth, innerHeight);
+    camera.aspect = innerWidth / innerHeight;
+    camera.updateProjectionMatrix();
 }
