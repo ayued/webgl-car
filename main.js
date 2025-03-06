@@ -2,34 +2,47 @@ import * as THREE from "three";
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
-const width = window.innerWidth - 60;
-const height = window.innerHeight - 200;
-
 // レンダラーを作成
-const renderer = new THREE.WebGLRenderer({
-    canvas: document.querySelector("#myCanvas")
-});
-renderer.setSize(width, height);  //描画サイズ
-renderer.setPixelRatio(window.devicePixelRatio);  //デバイスピクセル比（スマホのぼやけ防止）
+const renderer = new THREE.WebGLRenderer();
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setPixelRatio(window.devicePixelRatio);
+document.body.appendChild(renderer.domElement);
 
 // シーンを作成
 const scene = new THREE.Scene();
 
 // カメラを作成
-const camera = new THREE.PerspectiveCamera(45, width / height, 1, 10000);  //画角, アスペクト比, 描画開始/終了距離（オプション))
+const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 10000);  //画角, アスペクト比, 描画開始/終了距離（オプション))
 camera.position.set(40, 30, -80); // 初期位置
-camera.lookAt(0, 0, 0);
 
 // OrbitControlsを初期化（最初は無効化）
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enabled = false; // アニメーション中は操作できない
 
+// ライトを作成
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+scene.add(ambientLight);
+
+const directionalLight = new THREE.DirectionalLight(0xff00FF, 1.2);
+directionalLight.position.set(0.5, 10, 10);
+scene.add(directionalLight);
+
+const PointLight = new THREE.DirectionalLight(0x00A6FF, 2);
+PointLight.position.set(-3, 0, 2);
+scene.add(PointLight);
+
+// ジオメトリ
+const geometry = new THREE.TorusGeometry(6, 0.8, 10, 40);
+const material = new THREE.MeshPhysicalMaterial({ color: 0x5C26FF, roughness: 0.5, metalness: 0.2, clearCoat: 1.0, clearCoatRoughness: 0.1 });
+const torus = new THREE.Mesh(geometry, material);
+scene.add(torus);
 
 // 3Dモデルを読み込み
 const loader = new GLTFLoader();
 loader.load('models/car.glb', function (gltf) {
     const model = gltf.scene;
     scene.add(model);
+    // model.scale.set(20, 20, 20); 
 
     model.traverse((child) => {
         if (child.isMesh) {
@@ -57,14 +70,6 @@ loader.load('models/car.glb', function (gltf) {
     // カメラアニメーション開始
     animateCamera();
 });
-
-// ライトを作成（AmbientLight + DirectionalLight）
-const ambientLight = new THREE.AmbientLight(0xFFFFFF, 0.4); // 周囲光
-scene.add(ambientLight);
-
-const directionalLight = new THREE.DirectionalLight(0xFFFFFF, 1); // 方向性のある光
-directionalLight.position.set(10, 10, 10); // ライトの位置を設定
-scene.add(directionalLight);
 
 // アニメーション
 tick();
@@ -96,7 +101,7 @@ function animateCamera() {
 window.addEventListener("resize", onWindowResize);
 
 function onWindowResize() {
-    renderer.setSize(innerWidth, innerHeight);
-    camera.aspect = innerWidth / innerHeight;
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
 }
